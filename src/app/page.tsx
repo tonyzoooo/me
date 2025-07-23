@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-10 space-y-10">
       <section>
-        <h1 className="text-3xl font-bold mb-2">tonyzoooo.me</h1>
+        <h1 className="text-3xl font-bold mb-2">About me</h1>
         <p className="text-muted-foreground">
           I’m a software engineer building tools and side projects around the
           web.
