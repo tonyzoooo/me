@@ -1,43 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# me — Personal Website
 
-## Getting Started
+A minimalist personal site built with [Next.js](https://nextjs.org), featuring:
 
-First, run the development server:
+- ⚡️ App Router + Turbopack
+- 🎨 Tailwind CSS
+- ✍️ MDX blog with [Contentlayer](https://www.contentlayer.dev)
+- 🧱 [Shadcn UI](https://ui.shadcn.com)
+- 🧠 TypeScript
+- 📈 [Vercel Analytics](https://vercel.com/analytics)
+
+---
+
+## 🚀 Getting Started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Homepage → `src/app/page.tsx`
+- Blog + Projects → Markdown files in `content/`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📦 Learn More
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Contentlayer Docs](https://www.contentlayer.dev/docs/)
+- [Shadcn UI Docs](https://ui.shadcn.com/docs)
+- [Tailwind CSS Docs](https://tailwindcss.com/docs)
+- [Vercel Deployment Docs](https://vercel.com/docs)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📤 Deploy
 
-## Deploy on Vercel
+The site is deployed on [Vercel](https://vercel.com).  
+Push to the `main` branch and it’s live.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## License
+## 🪪 License
 
 - 🛠 **Code**: [MIT License](./LICENSE)
 - 📚 **Content (text, images, blog posts, etc.)**: [CC BY-NC-ND 4.0](./LICENSE.content)
 
-You are free to use, share, and reference the content non-commercially with attribution, but not modify or sell it.
+You are free to:
+
+- **Share** — copy and redistribute the material in any medium or format
+
+Under the following terms:
+
+- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+- **NonCommercial** — You may not use the material for commercial purposes.
+- **NoDerivatives** — If you remix, transform, or build upon the material, you may not distribute the modified material.
+
+No warranties are given. For full details, see:  
+[https://creativecommons.org/licenses/by-nc-nd/4.0](https://creativecommons.org/licenses/by-nc-nd/4.0)
+
+---
