@@ -24,9 +24,18 @@ export const Project = defineDocumentType(() => ({
   },
 }));
 
+export const CV = defineDocumentType(() => ({
+  name: "CV",
+  filePathPattern: `cv/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+  },
+}));
+
 export default makeSource({
-  contentDirPath: "content",
-  documentTypes: [Blog, Project],
+  contentDirPath: "src/content",
+  documentTypes: [Blog, Project, CV],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [[rehypePrettyCode, { theme: "github-dark" }]],
