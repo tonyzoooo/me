@@ -5,7 +5,6 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 
 export default function CVPage() {
   const cv = allCVs[0];
-  console.log(allCVs[0]);
   const MDXContent = useMDXComponent(cv.body.code);
 
   return (
