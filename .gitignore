@@ -182,5 +182,5 @@ next-env.d.ts
 .vscode/
 *.code-workspace
 
-# Husky hooks (auto-installés par husky-init)
-.husky/
+# Content
+src/content/

@@ -3,13 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "dev": "./scripts/fetch-content.sh && next dev --turbopack",
+    "build": "./scripts/fetch-content.sh && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "contentlayer build",
-    "prepare": "husky install",
-    "vercel-build": "echo \"$GITMODULES\" > .gitmodules && git submodule update --init --recursive && next build"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",

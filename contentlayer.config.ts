@@ -26,7 +26,7 @@ export const Project = defineDocumentType(() => ({
 
 export const CV = defineDocumentType(() => ({
   name: "CV",
-  filePathPattern: `cv/*.mdx`,
+  filePathPattern: `cv/**/*.mdx`,
   contentType: "mdx",
   fields: {
     title: { type: "string", required: true },
