@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { allCVs } from "contentlayer/generated";
-import { useMDXComponent } from "next-contentlayer/hooks";
+import { allCVs } from 'contentlayer/generated';
+import { useMDXComponent } from 'next-contentlayer/hooks';
 
 export default function CVPage() {
   const cv = allCVs[0];

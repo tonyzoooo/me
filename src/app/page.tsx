@@ -1,5 +1,5 @@
-import { allProjects, allBlogs } from "contentlayer/generated";
-import Link from "next/link";
+import { allProjects, allBlogs } from 'contentlayer/generated';
+import Link from 'next/link';
 
 export default function HomePage() {
   const featuredProjects = allProjects.slice(0, 2);
