@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "./scripts/fetch-content.sh && next dev --turbopack",
-    "build": "./scripts/fetch-content.sh && next build --turbopack",
+    "build": "./scripts/fetch-content.sh && contentlayer2 build && next build --turbopack",
     "start": "next start",
     "lint": "eslint .",
     "prepare": "husky install",
