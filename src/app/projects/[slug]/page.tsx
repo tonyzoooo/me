@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Badge } from '@/components';
 
 export const generateStaticParams = async () =>
-  allProjects.map((project) => ({ slug: project._raw.flattenedPath }));
+  allProjects.map((project) => ({ slug: project.slug }));
 
 export const generateMetadata = async ({
   params,
@@ -14,21 +14,17 @@ export const generateMetadata = async ({
   params: { slug: string };
 }) => {
   const { slug } = await params;
-  const project = allProjects.find(
-    (project) => project._raw.flattenedPath === `projects/${slug}`,
-  );
+  const project = allProjects.find((project) => project.slug === slug);
   if (!project) throw new Error(`Post not found for slug: ${slug}`);
   return {
     title: project.title,
-    description: project.summary ?? project.description ?? '',
+    //description: project.summary ?? project.description ?? '',
   };
 };
 
 const PostLayout = async ({ params }: { params: { slug: string } }) => {
   const { slug } = await params;
-  const project = allProjects.find(
-    (project) => project._raw.flattenedPath === `projects/${slug}`,
-  );
+  const project = allProjects.find((project) => project.slug === slug);
   if (!project) throw new Error(`Post not found for slug: ${slug}`);
   const Content = getMDXComponent(project.body.code);
 
@@ -42,7 +38,7 @@ const PostLayout = async ({ params }: { params: { slug: string } }) => {
         )}
         <h1 className="text-3xl font-bold">{project.title}</h1>
 
-        {project.summary && (
+        {/* {project.summary && (
           <p className="mt-2 text-gray-500">{project.summary}</p>
         )}
         {project.image && (
@@ -53,7 +49,7 @@ const PostLayout = async ({ params }: { params: { slug: string } }) => {
             height={400}
             className="mx-auto mt-4 rounded-lg border"
           />
-        )}
+        )} */}
         {project.tech && project.tech?.length > 0 && (
           <ul className="mt-4 flex flex-wrap justify-center gap-2 text-xs">
             {project.tech.map((t) => (
@@ -69,23 +65,22 @@ const PostLayout = async ({ params }: { params: { slug: string } }) => {
               Live Demo
             </Link>
           )}
-          {project.repo && (
+          {/* {project.repo && (
             <Link href={project.repo} className="text-blue-600 hover:underline">
               Source Code
             </Link>
-          )}
+          )} */}
         </div>
       </div>
 
       <Content />
 
-      {/* Extra computed fields */}
       <div className="mt-8 text-sm text-gray-500">
-        {project.readingTime && (
+        {/* {project.readingTime && (
           <p>
             ~{project.readingTime} min read · {project.wordCount} words
           </p>
-        )}
+        )} */}
       </div>
     </article>
   );
