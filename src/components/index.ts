@@ -1,2 +1,2 @@
 export * from './theme';
-export { Button } from './ui';
+export * from './ui';
