@@ -3,23 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "./scripts/fetch-content.sh && next dev",
-    "build": "./scripts/fetch-content.sh && next build",
+    "dev": "./scripts/fetch-content.sh && next dev --turbopack",
+    "build": "./scripts/fetch-content.sh && next build --turbopack",
     "start": "next start",
     "lint": "eslint .",
     "prepare": "husky install",
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-slot": "^1.2.3",
     "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "contentlayer": "^0.3.4",
-    "framer-motion": "^12.23.12",
+    "contentlayer2": "latest",
+    "date-fns": "^4.1.0",
     "lucide-react": "^0.525.0",
-    "next": "15.4.3",
-    "next-contentlayer": "^0.3.4",
+    "mdx-bundler": "^10.1.1",
+    "next": "latest",
+    "next-contentlayer2": "latest",
     "next-themes": "^0.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
@@ -30,26 +32,19 @@
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@eslint/eslintrc": "^3.3.1",
+    "@tailwindcss/postcss": "^4.1.12",
     "@tailwindcss/typography": "^0.5.16",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@types/node": "^20.19.11",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "eslint": "^9.34.0",
     "eslint-config-next": "15.4.3",
-    "husky": "^8.0.0",
+    "husky": "^8.0.3",
     "prettier": "^3.6.2",
-    "tailwindcss": "^4",
-    "tw-animate-css": "^1.3.5",
-    "typescript": "^5"
-  },
-  "pnpm": {
-    "overrides": {
-      "vfile": "5.3.7",
-      "vfile-message": "3.1.4",
-      "unified": "10.1.2"
-    }
+    "tailwindcss": "^4.1.12",
+    "tw-animate-css": "^1.3.7",
+    "typescript": "^5.9.2"
   },
   "packageManager": "pnpm@10.15.0+sha512.486ebc259d3e999a4e8691ce03b5cac4a71cbeca39372a9b762cb500cfdf0873e2cb16abe3d951b1ee2cf012503f027b98b6584e4df22524e0c7450d9ec7aa7b"
 }
