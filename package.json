@@ -6,7 +6,7 @@
     "dev": "./scripts/fetch-content.sh && next dev",
     "build": "./scripts/fetch-content.sh && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "prepare": "husky install",
     "format": "prettier --write ."
   },
