@@ -17,7 +17,10 @@ export const Blog = defineDocumentType(() => ({
     coverAlt: { type: 'string', required: false },
   },
   computedFields: {
-    slug: { type: 'string', resolve: (doc) => doc._raw.flattenedPath },
+    slug: {
+      type: 'string',
+      resolve: (doc) => doc._raw.flattenedPath.split('/').pop(),
+    },
     wordCount: {
       type: 'number',
       resolve: (doc) => doc.body?.raw?.trim().split(/\s+/).length ?? 0,
@@ -56,7 +59,10 @@ export const Project = defineDocumentType(() => ({
     summary: { type: 'string', required: false },
   },
   computedFields: {
-    slug: { type: 'string', resolve: (doc) => doc._raw.flattenedPath },
+    slug: {
+      type: 'string',
+      resolve: (doc) => doc._raw.flattenedPath.split('/').pop(),
+    },
     wordCount: {
       type: 'number',
       resolve: (doc) => doc.body?.raw?.trim().split(/\s+/).length ?? 0,
@@ -88,7 +94,6 @@ export const CV = defineDocumentType(() => ({
     links: { type: 'json', required: false },
   },
   computedFields: {
-    slug: { type: 'string', resolve: (doc) => doc._raw.flattenedPath },
     wordCount: {
       type: 'number',
       resolve: (doc) => doc.body?.raw?.trim().split(/\s+/).length ?? 0,
