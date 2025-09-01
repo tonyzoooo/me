@@ -85,12 +85,11 @@ export const Project = defineDocumentType(() => ({
 
 export const CV = defineDocumentType(() => ({
   name: 'CV',
-  filePathPattern: `cv/**/*.mdx`,
+  filePathPattern: `cv/cv.mdx`,
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
     updatedAt: { type: 'date', required: false },
-    summary: { type: 'string', required: false },
     links: { type: 'json', required: false },
   },
   computedFields: {
@@ -109,11 +108,22 @@ export const CV = defineDocumentType(() => ({
   },
 }));
 
+export const AboutMe = defineDocumentType(() => ({
+  name: 'AboutMe',
+  filePathPattern: `about-me/about-me.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+  },
+}));
+
 export default makeSource({
   contentDirPath: 'src/content',
-  documentTypes: [Blog, Project, CV],
+  documentTypes: [Blog, Project, CV, AboutMe],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [[rehypePrettyCode, { theme: 'github-dark' }]],
+    rehypePlugins: [
+      [rehypePrettyCode, { theme: 'github-dark', showLineNumbers: true }],
+    ],
   },
 });
