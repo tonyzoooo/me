@@ -22,13 +22,13 @@ export function NavigationBar() {
     <NavigationMenu className="justify-center py-4">
       <NavigationMenuList>
         {navItems.map(({ href, label }) => {
-          const isActive = pathname === href;
+          const isActive = pathname.startsWith(href);
           return (
             <NavigationMenuItem key={href}>
               <NavigationMenuLink asChild>
                 <Link
                   href={href}
-                  className={`px-4 py-2 font-medium rounded-md hover:bg-muted hover:text-foreground ${
+                  className={`p-2 font-medium rounded-md hover:bg-muted hover:text-foreground ${
                     isActive
                       ? 'text-foreground font-semibold bg-muted'
                       : 'text-muted-foreground'
