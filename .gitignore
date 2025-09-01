@@ -184,3 +184,4 @@ next-env.d.ts
 
 # Content
 src/content/
+public/assets/
