@@ -2,9 +2,9 @@ import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGfm from 'remark-gfm';
 
-export const Blog = defineDocumentType(() => ({
-  name: 'Blog',
-  filePathPattern: `blog/**/*.mdx`,
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `posts/**/*.mdx`,
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
@@ -20,6 +20,11 @@ export const Blog = defineDocumentType(() => ({
     slug: {
       type: 'string',
       resolve: (doc) => doc._raw.flattenedPath.split('/').pop(),
+    },
+    path: {
+      type: 'string',
+      resolve: (doc) =>
+        `/blog/${doc._raw.flattenedPath.replace(/^posts\//, '')}`,
     },
     wordCount: {
       type: 'number',
@@ -62,6 +67,10 @@ export const Project = defineDocumentType(() => ({
     slug: {
       type: 'string',
       resolve: (doc) => doc._raw.flattenedPath.split('/').pop(),
+    },
+    path: {
+      type: 'string',
+      resolve: (doc) => doc._raw.flattenedPath,
     },
     wordCount: {
       type: 'number',
@@ -119,7 +128,7 @@ export const AboutMe = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'src/content',
-  documentTypes: [Blog, Project, CV, AboutMe],
+  documentTypes: [Post, Project, CV, AboutMe],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
