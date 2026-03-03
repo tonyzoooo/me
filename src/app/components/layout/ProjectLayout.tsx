@@ -4,21 +4,11 @@ import { format, parseISO } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge, Header, Prose } from '@/components';
+import { Project } from 'contentlayer/generated';
 
 interface ProjectLayoutProps {
   children: React.ReactNode;
-  project: {
-    title: string;
-    summary?: string;
-    image?: string;
-    imageAlt?: string;
-    date?: string;
-    updatedAt?: string;
-    tech?: string[];
-    tags?: string[];
-    url?: string;
-    repo?: string;
-  };
+  project: Project;
 }
 
 export function ProjectLayout({ children, project }: ProjectLayoutProps) {
