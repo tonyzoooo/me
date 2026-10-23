@@ -1,48 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <style>
-    .lines {
-      stroke: #3f3f3f;
-    }
-    .bulb {
-      fill: #b0b0b0;
-      stroke: #3f3f3f;
-    }
-    @media (prefers-color-scheme: dark) {
-      .lines {
-        stroke: #d4d4d4;
-      }
-      .bulb {
-        fill: #4a4a4a;
-        stroke: #d4d4d4;
-      }
-    }
-  </style>
-  <!-- sprout -->
-  <g fill="none" class="lines" stroke-width="4" stroke-linecap="round">
-    <path d="M32 13C31 9 28 6.5 24 5" />
-    <path d="M32 13V5" />
-    <path d="M32 13c1-4 4-6.5 8-8" />
-  </g>
-  <!-- bulb -->
-  <path
-    class="bulb"
-    d="M32 13c13 0 21 11 21 22 0 10-9 17-21 19C20 52 11 45 11 35c0-11 8-22 21-22Z"
-    stroke-width="3"
-    stroke-linecap="round"
-  />
-  <!-- layers (evenly spread) -->
-  <g fill="none" class="lines" stroke-width="3" stroke-linecap="round">
-    <path d="M26 15c-6.5 8-8.5 22-3.5 34" />
-    <path d="M30 15.5c-4 9-5 24-2 36" />
-    <path d="M34 15.5c4 9 5 24 2 36" />
-    <path d="M38 15c6.5 8 8.5 22 3.5 34" />
-  </g>
-  <!-- roots -->
-  <g fill="none" class="lines" stroke-width="2.5" stroke-linecap="round">
-    <path d="m28 53.5-6 5" />
-    <path d="m30 54.5-2.5 6.5" />
-    <path d="M32 55v7" />
-    <path d="m34 54.5 2.5 6.5" />
-    <path d="m36 53.5 6 5" />
+  <g transform="translate(0 1.5)">
+    <!-- sprout -->
+    <g fill="none" stroke="#8ac261" stroke-width="4" stroke-linecap="round">
+      <path d="M32 13C31 8.5 28 5 23 2.5" />
+      <path d="M32 13V2.5" />
+      <path d="M32 13c1-5 4-8 9-10.5" />
+    </g>
+    <!-- bulb -->
+    <path
+      d="M32 13c13 0 21 11 21 22 0 10-9 17-21 19C20 52 11 45 11 35c0-11 8-22 21-22Z"
+      fill="#f9c664"
+      stroke="#b8862e"
+      stroke-width="3"
+      stroke-linecap="round"
+    />
+    <!-- layers (evenly spread) -->
+    <g fill="none" stroke="#b8862e" stroke-width="3" stroke-linecap="round" opacity="0.55">
+      <path d="M26 15c-6.5 8-8.5 22-3.5 34" />
+      <path d="M30 15.5c-4 9-5 24-2 36" />
+      <path d="M34 15.5c4 9 5 24 2 36" />
+      <path d="M38 15c6.5 8 8.5 22 3.5 34" />
+    </g>
+    <!-- face -->
+    <g fill="#4b3a25">
+      <circle cx="28" cy="31" r="2.1" />
+      <circle cx="36" cy="31" r="2.1" />
+    </g>
+    <path
+      d="M29 37.5q3 3.2 6 0"
+      fill="none"
+      stroke="#4b3a25"
+      stroke-width="2.2"
+      stroke-linecap="round"
+    />
+    <g fill="#f4a09c" opacity="0.65">
+      <circle cx="24" cy="35.5" r="2.4" />
+      <circle cx="40" cy="35.5" r="2.4" />
+    </g>
+    <!-- roots -->
+    <g fill="none" stroke="#a97b2c" stroke-width="2.5" stroke-linecap="round">
+      <path d="m28 53.5-4 3.5" />
+      <path d="m30 54.5-1.5 4" />
+      <path d="M32 55v4" />
+      <path d="m34 54.5 1.5 4" />
+      <path d="m36 53.5 4 3.5" />
+    </g>
   </g>
 </svg>

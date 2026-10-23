@@ -1,9 +1,104 @@
 ---
 import { PageLayout } from '@layouts';
 import { Breadcrumbs } from '@components';
+
+const sections = [
+  {
+    title: 'Docs',
+    items: [
+      {
+        name: 'MDN Web Docs',
+        url: 'https://developer.mozilla.org/',
+        note: 'HTML, CSS and JavaScript reference',
+      },
+      {
+        name: 'Astro',
+        url: 'https://docs.astro.build/',
+        note: 'This site is built with it',
+      },
+      {
+        name: 'Tailwind CSS',
+        url: 'https://tailwindcss.com/docs',
+        note: 'Utility-first styling',
+      },
+      {
+        name: 'Payload CMS',
+        url: 'https://payloadcms.com/docs',
+        note: 'What this blog runs on',
+      },
+      {
+        name: 'TypeScript',
+        url: 'https://www.typescriptlang.org/docs/',
+        note: 'Typed JavaScript',
+      },
+    ],
+  },
+  {
+    title: 'Learn',
+    items: [
+      {
+        name: 'The Odin Project',
+        url: 'https://www.theodinproject.com/',
+        note: 'Full-stack curriculum',
+      },
+      {
+        name: 'Eloquent JavaScript',
+        url: 'https://eloquentjavascript.net/',
+        note: 'Free book, great fundamentals',
+      },
+      {
+        name: 'web.dev',
+        url: 'https://web.dev/learn',
+        note: 'Modern web platform guides',
+      },
+    ],
+  },
+  {
+    title: 'Tools',
+    items: [
+      {
+        name: 'Can I Use',
+        url: 'https://caniuse.com/',
+        note: 'Browser support tables',
+      },
+      {
+        name: 'Git Cheat Sheet',
+        url: 'https://education.github.com/git-cheat-sheet-education.pdf',
+        note: 'Everyday git commands',
+      },
+      {
+        name: 'Regex101',
+        url: 'https://regex101.com/',
+        note: 'Test and debug regular expressions',
+      },
+    ],
+  },
+];
 ---
 
 <PageLayout title="Resources" description="Tools, docs, and learning material">
   <Breadcrumbs crumbs={[{ label: 'Resources' }]} />
   <h1>Resources</h1>
+  <p>
+    A living list of tools, documentation, and learning material I keep coming
+    back to.
+  </p>
+  {sections.map(({ title, items }) => (
+    <section>
+      <h2>{title}</h2>
+      <ul>
+        {items.map(({ name, url, note }) => (
+          <li>
+            <a href={url}>{name}</a>: {note}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 </PageLayout>
+
+<style>
+  section {
+    margin-top: 2rem;
+  }
+</style>

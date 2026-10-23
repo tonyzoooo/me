@@ -1,32 +1,86 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-const { title, description, ...rest } = Astro.props;
+import { ReadingProgress } from '@components';
+import { authorName, mediaUrl } from '@utils';
+import type { Post } from '@utils';
+
+const { title, description, post, ...rest } = Astro.props as {
+  title?: string;
+  description?: string;
+  post?: Post;
+  [key: string]: unknown;
+};
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout
+  title={title}
+  description={description}
+  og={
+    post && {
+      title: post.title,
+      description: post.excerpt,
+      image: mediaUrl(post.featuredImage),
+      type: 'article',
+      publishedTime: post.publishedDate,
+      modifiedTime: post.updatedAt,
+      author: authorName(post),
+      tags: post.tags,
+    }
+  }
+>
+  <ReadingProgress />
   <main class="post-content">
     <article class="prose">
-      <slot {...rest} />
+      <div class="post-layout">
+        <aside class="post-toc-rail">
+          <slot name="toc" />
+        </aside>
+        <div class="post-body">
+          <slot {...rest} />
+        </div>
+      </div>
     </article>
   </main>
 </BaseLayout>
 
 <style>
   .post-content {
-    max-width: 42rem;
+    max-width: 75rem;
     margin: 0 auto;
     padding: 0 1.5rem 3rem;
   }
-  
+
+  .post-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 42rem);
+    justify-content: center;
+  }
+
+  .post-toc-rail {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .post-layout {
+      grid-template-columns: 1fr minmax(0, 42rem) 1fr;
+      column-gap: 2.5rem;
+    }
+
+    .post-toc-rail {
+      display: block;
+      justify-self: end;
+    }
+  }
+
   .post-content .prose {
     max-width: none;
     line-height: 1.75;
   }
-  
+
   .post-content .prose p {
     color: var(--text);
   }
-  
+
   .post-content .prose h1,
   .post-content .prose h2,
   .post-content .prose h3,
@@ -37,27 +91,41 @@ const { title, description, ...rest } = Astro.props;
     font-weight: 700;
     line-height: 1.25;
   }
-  
-  .post-content .prose h1 { font-size: var(--text-4xl); }
-  .post-content .prose h2 { font-size: var(--text-3xl); }
-  .post-content .prose h3 { font-size: var(--text-2xl); }
-  .post-content .prose h4 { font-size: var(--text-xl); }
-  .post-content .prose h5 { font-size: var(--text-lg); }
-  
-  .post-content .prose a {
+
+  .post-content .prose h1 {
+    font-size: var(--text-4xl);
+  }
+  .post-content .prose h2 {
+    font-size: var(--text-3xl);
+  }
+  .post-content .prose h3 {
+    font-size: var(--text-2xl);
+  }
+  .post-content .prose h4 {
+    font-size: var(--text-xl);
+  }
+  .post-content .prose h5 {
+    font-size: var(--text-lg);
+  }
+
+  .post-content
+    .prose
+    a:not(:where([class~='not-prose'], [class~='not-prose'] *)) {
     color: var(--color-link);
     text-decoration: underline;
   }
-  
-  .post-content .prose a:hover {
+
+  .post-content
+    .prose
+    a:not(:where([class~='not-prose'], [class~='not-prose'] *)):hover {
     color: var(--color-link-hover);
   }
-  
+
   .post-content .prose strong {
     color: var(--text);
     font-weight: 600;
   }
-  
+
   .post-content .prose blockquote {
     border-left: 3px solid var(--border);
     padding-left: 1rem;

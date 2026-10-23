@@ -3,8 +3,25 @@ import '@styles/global.css';
 import { Header, Footer } from '@components';
 
 const SITE_NAME = 'tonyzoooo.me';
-const { title, description } = Astro.props;
-const pageTitle = !title || title === SITE_NAME ? SITE_NAME : `${title} · ${SITE_NAME}`;
+
+interface OgMeta {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  tags?: string[];
+}
+
+const { title, description, og } = Astro.props as {
+  title?: string;
+  description?: string;
+  og?: OgMeta;
+};
+const pageTitle =
+  !title || title === SITE_NAME ? SITE_NAME : `${title} · ${SITE_NAME}`;
 ---
 
 <html lang="en">
@@ -16,7 +33,9 @@ const pageTitle = !title || title === SITE_NAME ? SITE_NAME : `${title} · ${SIT
     <script is:inline>
       const theme =
         localStorage.getItem('theme') ??
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        (window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light');
       document.documentElement.classList.toggle('dark', theme === 'dark');
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -26,6 +45,32 @@ const pageTitle = !title || title === SITE_NAME ? SITE_NAME : `${title} · ${SIT
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    {og && (
+      <>
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:title" content={og.title || pageTitle} />
+        <meta
+          property="og:description"
+          content={og.description || description || ''}
+        />
+        <meta property="og:type" content={og.type || 'website'} />
+        {og.image && <meta property="og:image" content={og.image} />}
+        {og.publishedTime && (
+          <meta property="article:published_time" content={og.publishedTime} />
+        )}
+        {og.modifiedTime && (
+          <meta property="article:modified_time" content={og.modifiedTime} />
+        )}
+        {og.author && <meta property="article:author" content={og.author} />}
+        {(og.tags ?? []).map((tag) => (
+          <meta property="article:tag" content={tag} />
+        ))}
+        <meta
+          name="twitter:card"
+          content={og.image ? 'summary_large_image' : 'summary'}
+        />
+      </>
+    )}
   </head>
   <body class="antialiased min-h-screen flex flex-col">
     <Header />

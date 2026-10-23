@@ -1,9 +1,32 @@
 ---
 import { PageLayout } from '@layouts';
 import { Breadcrumbs } from '@components';
-import { getPublishedPosts } from '@utils';
+import {
+  getPublishedPosts,
+  getArchivedPosts,
+  authorName,
+  groupByMonth,
+  mediaUrl,
+} from '@utils';
 
-const { docs: posts } = await getPublishedPosts();
+const [{ docs: posts }, { docs: archivedPosts }] = await Promise.all([
+  getPublishedPosts(),
+  getArchivedPosts(),
+]);
+const archive = groupByMonth([...posts, ...archivedPosts]);
+
+const tagCounts = new Map<string, number>();
+for (const post of [...posts, ...archivedPosts]) {
+  for (const tag of post.tags ?? []) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+const tags = [...tagCounts.entries()].sort(([a], [b]) => a.localeCompare(b));
+
+const monthName = (month: number) =>
+  new Date(2000, month, 1).toLocaleDateString('en-US', { month: 'long' });
+const monthUrl = (year: number, month: number) =>
+  `/blog/${year}/${String(month + 1).padStart(2, '0')}`;
 ---
 
 <PageLayout title="Blog">
@@ -16,17 +39,43 @@ const { docs: posts } = await getPublishedPosts();
     <div class="post-list">
       {posts.map((post) => (
         <article class="post-card">
+          {mediaUrl(post.featuredImage) && (
+            <a
+              href={`/blog/${post.slug}`}
+              class="post-cover"
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              <img
+                src={mediaUrl(post.featuredImage)}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+          )}
           <h2>
             <a href={`/blog/${post.slug}`}>{post.title}</a>
           </h2>
-          {post.publishedDate && (
-            <time class="post-meta">
-              {new Date(post.publishedDate).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </time>
+          <div class="post-meta">
+            {post.publishedDate && (
+              <time datetime={post.publishedDate}>
+                {new Date(post.publishedDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
+            )}
+            {post.stats && <span>{post.stats.readingTime} min read</span>}
+            {authorName(post) && <span>By {authorName(post)}</span>}
+          </div>
+          {post.tags && post.tags.length > 0 && (
+            <ul class="post-tags">
+              {post.tags.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
           )}
           {post.excerpt && <p class="post-excerpt">{post.excerpt}</p>}
           <a href={`/blog/${post.slug}`} class="read-more">
@@ -36,7 +85,107 @@ const { docs: posts } = await getPublishedPosts();
       ))}
     </div>
   )}
+  {(archive.length > 0 || tags.length > 0) && (
+    <aside slot="aside" class="blog-sidebar not-prose">
+      {archive.length > 0 && (
+        <section>
+          <h2 class="sidebar-title">By date</h2>
+          {archive.map(({ year, months }) => (
+            <div class="archive-year">
+              <h3>{year}</h3>
+              <ul>
+                {months.map(({ month, count }) => (
+                  <li>
+                    <a href={monthUrl(year, month)}>
+                      {monthName(month)} <span class="count">({count})</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          {archivedPosts.length > 0 && (
+            <a class="archived-link" href="/blog/archived/">
+              Archived posts <span class="count">({archivedPosts.length})</span>
+            </a>
+          )}
+        </section>
+      )}
+      {tags.length > 0 && (
+        <section>
+          <h2 class="sidebar-title">Tags</h2>
+          <ul class="tag-list">
+            {tags.map(([tag, count]) => (
+              <li>
+                <a href={`/blog/tag/${tag}`}>
+                  {tag} <span class="count">({count})</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </aside>
+  )}
 </PageLayout>
+
+<style>
+  .blog-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    position: sticky;
+    top: 5.5rem;
+  }
+
+  .sidebar-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 0.75rem;
+  }
+
+  .archive-year h3 {
+    font-size: var(--text-sm);
+    color: var(--text);
+    margin: 0.75rem 0 0.25rem;
+  }
+
+  .archive-year ul,
+  .tag-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .tag-list {
+    flex-wrap: wrap;
+  }
+
+  .blog-sidebar a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition: color 0.2s ease;
+  }
+
+  .blog-sidebar a:hover {
+    color: var(--accent);
+  }
+
+  .count {
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .archived-link {
+    display: inline-block;
+    margin-top: 0.75rem;
+  }
+</style>
 
 <style>
   .post-list {
@@ -44,32 +193,64 @@ const { docs: posts } = await getPublishedPosts();
     flex-direction: column;
     gap: 2rem;
   }
-  
+
   .post-card {
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--border);
   }
-  
+
+  .post-cover {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .post-cover img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+  }
+
   .post-card h2 a {
     text-decoration: none;
   }
-  
+
   .post-card h2 a:hover {
     color: var(--color-link-hover);
   }
-  
+
   .post-meta {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
     margin-top: 0.5rem;
     font-size: var(--text-sm);
     color: var(--text-muted);
   }
-  
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .post-tags li {
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
   .post-excerpt {
     margin: 1rem 0 0;
     color: var(--text);
   }
-  
+
   .read-more {
     display: inline-block;
     margin-top: 1rem;

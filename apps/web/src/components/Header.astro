@@ -11,20 +11,21 @@ const links = [
 ---
 
 <header class="sticky top-0 z-10 bg-[var(--background)] border-b border-[var(--border)] font-sans">
-  <nav aria-label="Main" class="max-w-2xl mx-auto px-6 py-4 flex items-center gap-8">
+  <nav
+    aria-label="Main"
+    class="max-w-2xl mx-auto px-6 py-4 flex items-center gap-8"
+  >
     <a href="/" class="nav-link" aria-label="tonyzoooo.me home">
       <Onion class="size-6" />
     </a>
     <ul class="ml-auto flex gap-8 text-sm font-medium">
-      {
-        links.map(({ href, label }) => (
-          <li>
-            <a href={href} class="nav-link">
-              {label}
-            </a>
-          </li>
-        ))
-      }
+      {links.map(({ href, label }) => (
+        <li>
+          <a href={href} class="nav-link">
+            {label}
+          </a>
+        </li>
+      ))}
     </ul>
     <ThemeToggle />
   </nav>
