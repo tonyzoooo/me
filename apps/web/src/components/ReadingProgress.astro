@@ -1,0 +1,18 @@
+<div
+  id="reading-progress"
+  class="fixed top-0 left-0 z-20 h-0.5 w-0 bg-[var(--accent)]"
+  aria-hidden="true"
+></div>
+
+<script>
+  const bar = document.getElementById('reading-progress');
+  const update = () => {
+    if (!bar) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0;
+    bar.style.width = `${progress}%`;
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+</script>

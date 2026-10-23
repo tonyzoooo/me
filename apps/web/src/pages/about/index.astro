@@ -1,6 +1,13 @@
 ---
 import { PageLayout } from '@layouts';
 import { Breadcrumbs } from '@components';
+
+const gear = [
+  {
+    name: 'MacBook Air 13" (M5)',
+    note: 'My precious.',
+  },
+];
 ---
 
 <PageLayout title="About" description="Learn more about Tony">
@@ -11,12 +18,20 @@ import { Breadcrumbs } from '@components';
     I'm Tony, a developer who enjoys building things and writing about them.
   </p>
   <figure>
-    <img
-      src="/computer-guy.jpg"
-      alt="Computer guy"
-      class="profile-image"
-    />
+    <img src="/computer-guy.jpg" alt="Computer guy" class="profile-image" />
   </figure>
+
+  <section>
+    <h2>My gear</h2>
+    <p>The hardware I use day to day:</p>
+    <ul>
+      {gear.map(({ name, note }) => (
+        <li>
+          <strong>{name}</strong>: {note}
+        </li>
+      ))}
+    </ul>
+  </section>
 </PageLayout>
 
 <style>
@@ -24,11 +39,15 @@ import { Breadcrumbs } from '@components';
     margin: 2rem 0;
     text-align: center;
   }
-  
+
   .profile-image {
     max-width: 24rem;
     margin: 0 auto;
     border-radius: 0.5rem;
     border: 1px solid var(--border);
+  }
+
+  section {
+    margin-top: 2rem;
   }
 </style>

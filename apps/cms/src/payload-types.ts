@@ -125,6 +125,12 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  /**
+   * Public handle, e.g. tonyzoooo. Takes precedence over your real name.
+   */
+  username?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -146,11 +152,16 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Media used across the site, e.g. post cover images
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: number;
+  /**
+   * Describe the media for screen readers and social previews
+   */
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -165,13 +176,24 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * Blog posts published on tonyzoooo.me
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
   id: number;
+  /**
+   * The headline shown everywhere on the site
+   */
   title: string;
+  /**
+   * URL segment. Left empty, it is generated from the title.
+   */
   slug: string;
+  /**
+   * The article body. Add headings (H2/H3) to get a table of contents.
+   */
   content: {
     root: {
       type: string;
@@ -187,10 +209,30 @@ export interface Post {
     };
     [k: string]: unknown;
   };
+  /**
+   * Short summary shown on blog cards and social previews
+   */
   excerpt?: string | null;
+  /**
+   * Post tags, e.g. astro, typescript, side-project
+   */
+  tags?: string[] | null;
+  /**
+   * Cover image shown on the blog card and post page
+   */
+  featuredImage?: (number | null) | Media;
+  /**
+   * Shown as the byline. Display name comes from the user profile.
+   */
   author?: (number | null) | User;
+  /**
+   * Shown on the site. Posts without a date sort last.
+   */
   publishedDate?: string | null;
-  status?: ('draft' | 'published') | null;
+  /**
+   * Published posts appear on the blog. Archived posts move to /blog/archived. Drafts stay hidden.
+   */
+  status?: ('draft' | 'published' | 'archived') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -277,6 +319,9 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  username?: T;
+  firstName?: T;
+  lastName?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -322,6 +367,8 @@ export interface PostsSelect<T extends boolean = true> {
   slug?: T;
   content?: T;
   excerpt?: T;
+  tags?: T;
+  featuredImage?: T;
   author?: T;
   publishedDate?: T;
   status?: T;

@@ -23,14 +23,15 @@ describe('Header', () => {
   it('links the onion logo (no site name) to the home page', () => {
     expect(html).toMatch(/<a href="\/" class="nav-link" aria-label="[^"]*">/);
     expect(html).toContain('viewBox="0 0 64 64"');
-    expect(html).toContain('currentColor');
+    expect(html).toContain('#f9c664');
+    expect(html).toContain('#f4a09c');
     expect(html).not.toMatch(/tonyzoooo\.me<\/a>/);
   });
 
   it('contains all nav links in order', () => {
-    const labels = [...html.matchAll(/class="nav-link[^"]*">\s*([A-Za-z]+)\s*<\/a>/g)].map(
-      (m) => m[1],
-    );
+    const labels = [
+      ...html.matchAll(/class="nav-link[^"]*">\s*([A-Za-z]+)\s*<\/a>/g),
+    ].map((m) => m[1]);
     expect(labels).toEqual(['Home', 'Blog', 'Resources', 'About']);
   });
 
@@ -56,7 +57,9 @@ describe('Footer', () => {
   });
 
   it('marks code as MIT and content as all rights reserved', () => {
-    expect(html).toMatch(/Code\s*<a href="https:\/\/opensource\.org\/license\/mit">MIT<\/a>/);
+    expect(html).toMatch(
+      /Code\s*<a href="https:\/\/opensource\.org\/license\/mit">MIT<\/a>/
+    );
     expect(html).toContain('Content all rights reserved');
   });
 
@@ -72,10 +75,7 @@ describe('Breadcrumbs', () => {
   it('renders home followed by the given crumbs with separators', async () => {
     const html = await container.renderToString(Breadcrumbs, {
       props: {
-        crumbs: [
-          { href: '/blog', label: 'Blog' },
-          { label: 'A post' },
-        ],
+        crumbs: [{ href: '/blog', label: 'Blog' }, { label: 'A post' }],
       },
     });
 
@@ -86,7 +86,9 @@ describe('Breadcrumbs', () => {
   });
 
   it('opts out of prose styling and list markers', async () => {
-    const html = await container.renderToString(Breadcrumbs, { props: { crumbs: [] } });
+    const html = await container.renderToString(Breadcrumbs, {
+      props: { crumbs: [] },
+    });
 
     expect(html).toContain('not-prose');
     expect(html).toContain('list-none');
@@ -94,7 +96,9 @@ describe('Breadcrumbs', () => {
 
   it('marks the current page without a link', async () => {
     const html = await container.renderToString(Breadcrumbs, {
-      props: { crumbs: [{ href: '/blog', label: 'Blog' }, { label: 'A post' }] },
+      props: {
+        crumbs: [{ href: '/blog', label: 'Blog' }, { label: 'A post' }],
+      },
     });
 
     expect(html).toContain('<span aria-current="page">A post</span>');

@@ -1,0 +1,105 @@
+---
+import type { Heading } from '@utils';
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+---
+
+<nav class="post-toc not-prose" aria-label="Table of contents">
+  <p class="post-toc-title">On this page</p>
+  <ul class="not-prose">
+    {headings.map((heading) => (
+      <li
+        class="not-prose"
+        style={`margin-left: ${(heading.level - 2) * 0.75}rem;`}
+      >
+        <a href={`#${heading.id}`}>{heading.text}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  const toc = document.querySelector('.post-toc');
+  if (toc) {
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+    const targets = links
+      .map((link) =>
+        document.getElementById((link.getAttribute('href') || '').slice(1))
+      )
+      .filter((el): el is HTMLElement => el !== null);
+
+    const update = () => {
+      let activeId: string | undefined = targets[0]?.id;
+      for (const target of targets) {
+        if (target.getBoundingClientRect().top <= 120) {
+          activeId = target.id;
+        }
+      }
+      for (const link of links) {
+        link.classList.toggle(
+          'toc-active',
+          (link.getAttribute('href') || '') === `#${activeId}`
+        );
+      }
+    };
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+</script>
+
+<style>
+  .post-toc {
+    position: sticky;
+    top: 5.5rem;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+  }
+
+  .post-toc-title {
+    margin: 0 0 0.5rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .post-toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .post-toc li {
+    margin: 0;
+  }
+
+  .post-toc a {
+    display: block;
+    padding: 0.125rem 0 0.125rem 0.625rem;
+    border-left: 2px solid var(--border);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .post-toc a:hover {
+    color: var(--accent);
+    border-left-color: var(--text-muted);
+  }
+
+  .post-toc a.toc-active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+</style>
