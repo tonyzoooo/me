@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { rebuildWebsite } from '../hooks/rebuildWebsite'
+
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
@@ -9,6 +11,9 @@ export const Media: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [rebuildWebsite],
   },
   fields: [
     {

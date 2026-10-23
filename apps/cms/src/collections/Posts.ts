@@ -1,6 +1,8 @@
 // collections/Posts.ts
 import type { CollectionConfig } from 'payload'
 
+import { rebuildWebsite } from '../hooks/rebuildWebsite'
+
 export const Posts: CollectionConfig = {
   slug: 'posts',
   labels: {
@@ -114,5 +116,8 @@ export const Posts: CollectionConfig = {
       }
       return true
     },
+  },
+  hooks: {
+    afterChange: [rebuildWebsite],
   },
 }

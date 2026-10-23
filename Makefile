@@ -2,7 +2,7 @@
 # Usage: make <target>
 # Run `make help` to see all available targets
 
-.PHONY: help dev build lint test clean install docker-cms-up docker-cms-down
+.PHONY: help dev build lint test clean install docker-cms-up docker-cms-down deploy-setup
 
 # Default target
 help:
@@ -30,6 +30,9 @@ help:
 	@echo "CMS (Docker):"
 	@echo "  make docker-cms-up    # Run CMS fully inside Docker Compose"
 	@echo "  make docker-cms-down  # Stop CMS Docker containers"
+	@echo ""
+	@echo "Deployment:"
+	@echo "  make deploy-setup     # Set up and deploy both Vercel projects"
 	@echo ""
 
 # Install dependencies
@@ -74,6 +77,9 @@ docker-cms-up:
 
 docker-cms-down:
 	cd apps/cms && docker-compose down
+
+deploy-setup:
+	./scripts/vercel-setup.sh
 
 # Additional convenience targets
 # Run a specific app's dev server directly (bypasses turbo)

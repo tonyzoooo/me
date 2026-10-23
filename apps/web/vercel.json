@@ -1,0 +1,21 @@
+{
+  "framework": "astro",
+  "rewrites": [
+    {
+      "source": "/_next/:path*",
+      "destination": "https://tonyzoooo-me-cms.vercel.app/_next/:path*"
+    },
+    {
+      "source": "/admin",
+      "destination": "https://tonyzoooo-me-cms.vercel.app/admin"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://tonyzoooo-me-cms.vercel.app/admin/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://tonyzoooo-me-cms.vercel.app/api/:path*"
+    }
+  ]
+}

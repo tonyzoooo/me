@@ -57,13 +57,7 @@ export const OnionAvatar = ({ user }: { user?: User }) => {
             strokeWidth="3"
             strokeLinecap="round"
           />
-          <g
-            fill="none"
-            stroke="#b8862e"
-            strokeWidth="3"
-            strokeLinecap="round"
-            opacity="0.55"
-          >
+          <g fill="none" stroke="#b8862e" strokeWidth="3" strokeLinecap="round" opacity="0.55">
             <path d="M26 15c-6.5 8-8.5 22-3.5 34" />
             <path d="M30 15.5c-4 9-5 24-2 36" />
             <path d="M34 15.5c4 9 5 24 2 36" />
