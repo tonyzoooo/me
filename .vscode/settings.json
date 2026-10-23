@@ -1,0 +1,14 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    }
+  },
+  "[astro]": { "editor.defaultFormatter": "astro-build.astro-vscode" },
+  "[mdx]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
+}

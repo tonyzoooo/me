@@ -1,0 +1,28 @@
+---
+import { PageLayout } from '@layouts';
+---
+
+<PageLayout title="Not Found">
+  <div class="text-center">
+    <h1>404</h1>
+    <p class="text-muted">Page not found.</p>
+    <a href="/">Go home</a>
+  </div>
+</PageLayout>
+
+<style>
+  .text-center {
+    text-align: center;
+  }
+
+  .text-center h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .text-center p {
+    font-size: var(--text-xl);
+    margin-bottom: 2rem;
+  }
+</style>
