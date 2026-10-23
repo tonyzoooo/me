@@ -1,6 +1,6 @@
-# Monorepo - Tony's Projects
+# Monorepo - me
 
-A Turborepo monorepo containing multiple applications and shared packages.
+A Turborepo monorepo containing multiple applications and shared packages personal website.
 
 ## What's inside?
 
@@ -223,6 +223,72 @@ me/
 ├── turbo.json         # Turborepo configuration
 └── package.json       # Root package.json
 ```
+
+## Deployment (Vercel + Neon + Cloudflare R2)
+
+The stack in production:
+
+| Piece       | Service                                        | Notes                                                                 |
+| ----------- | ---------------------------------------------- | --------------------------------------------------------------------- |
+| `cms` app   | Vercel (Next.js project, root `apps/cms`)      | needs `DATABASE_URL` (Neon), `PAYLOAD_SECRET`, `NEXT_PUBLIC_SITE_URL` |
+| `web` app   | Vercel (Astro static project, root `apps/web`) | needs `PUBLIC_CMS_URL` pointing at the deployed CMS                   |
+| Postgres    | Neon (free tier, EU region)                    | schema managed with migrations                                        |
+| Media files | Cloudflare R2 (free tier, EU bucket)           | served from a public R2 domain                                        |
+
+### One-time setup
+
+1. **Neon**: create the database (EU region), then apply the schema:
+
+   ```sh
+   cd apps/cms
+   DATABASE_URL=<neon-url> pnpm exec payload migrate
+   ```
+
+2. **Cloudflare R2**: create a bucket (EEA location hint), enable public access
+   for it (use the `r2.dev` domain or attach a custom domain), and create an
+   API token with Object Read & Write permission for that bucket.
+
+3. **Vercel login** (once, opens a browser):
+
+   ```sh
+   pnpm --dir apps/cms exec vercel login
+   ```
+
+4. **Copy and fill in the production config**:
+
+   ```sh
+   cp apps/cms/.env.production.example apps/cms/.env.production
+   # edit .env.production with the Neon URL, R2 keys and bucket URL
+   ```
+
+5. **Run the setup script**:
+
+   ```sh
+   make deploy-setup
+   ```
+
+   It creates and links both Vercel projects (`tonyzoooo-me-cms`,
+   `tonyzoooo-me-web` by default, override with `CMS_PROJECT=... WEB_PROJECT=...`),
+   sets all environment variables, and deploys both apps.
+
+6. **Finish manually** (script prints these reminders too):
+
+   - Create a Deploy Hook in the web project (Settings -> Deploy Hooks) and add
+     its URL as `WEB_DEPLOY_HOOK_URL` to the CMS project, then redeploy the CMS.
+   - Connect both projects to the GitHub repo in the Vercel dashboard
+     (Settings -> Git) to get automatic deploys on every push.
+   - Attach the domain to the web project: the site lives at tonyzoooo.me and
+     the CMS is mounted under it via rewrites in apps/web/vercel.json
+     (tonyzoooo.me/admin, /api, /_next proxy to the CMS project). DNS
+     (Cloudflare): A record @ -> 76.76.21.21, DNS only. Once live, re-run
+     'SITE_URL=https://tonyzoooo.me make deploy-setup' so both projects use
+     the domain for their URL env vars.
+
+### Publishing flow
+
+Write a post in the admin panel, set its status to `published`, and save: the
+CMS fires the web project's Deploy Hook, Vercel rebuilds the site, and the new
+post is live. The site is fully static; the CMS is only needed at build time.
 
 ## Useful Links
 

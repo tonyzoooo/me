@@ -16,20 +16,19 @@
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
-    "deploy": "vercel",
-    "deploy:prod": "vercel --prod",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "^3.90.2",
-    "@payloadcms/next": "^3.90.2",
-    "@payloadcms/richtext-lexical": "^3.90.2",
-    "@payloadcms/ui": "^3.90.2",
+    "@payloadcms/db-postgres": "^3.91.0",
+    "@payloadcms/next": "^3.91.0",
+    "@payloadcms/richtext-lexical": "^3.91.0",
+    "@payloadcms/storage-s3": "^3.91.0",
+    "@payloadcms/ui": "^3.91.0",
     "cross-env": "^10.1.0",
     "dotenv": "^18.0.7",
     "graphql": "^17.0.2",
     "next": "^16.4.0",
-    "payload": "^3.90.2",
+    "payload": "^3.91.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "sharp": "^0.35.5"
@@ -48,12 +47,18 @@
     "prettier": "^3.9.10",
     "tsx": "^4.23.15",
     "typescript": "~5.9.3",
-    "vercel": "^63.1.2",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^5.0.4"
   },
   "engines": {
-    "node": ">=24.0.0",
-    "pnpm": "^11"
+    "node": "24"
+  },
+  "packageManager": "pnpm@12.0.0+sha512.9e2e3dc3911995868dc94b8175c217c27e95408fa03b4a22749778f2b34f773b77cdd3b39ede8171b22fcd53be6a35342e9fac9948a68ef58df6488ce89a7e67",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
