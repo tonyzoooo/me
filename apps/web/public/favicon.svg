@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .lines {
+      stroke: #3f3f3f;
+    }
+    .bulb {
+      fill: #b0b0b0;
+      stroke: #3f3f3f;
+    }
+    @media (prefers-color-scheme: dark) {
+      .lines {
+        stroke: #d4d4d4;
+      }
+      .bulb {
+        fill: #4a4a4a;
+        stroke: #d4d4d4;
+      }
+    }
+  </style>
+  <!-- sprout -->
+  <g fill="none" class="lines" stroke-width="4" stroke-linecap="round">
+    <path d="M32 13C31 9 28 6.5 24 5" />
+    <path d="M32 13V5" />
+    <path d="M32 13c1-4 4-6.5 8-8" />
+  </g>
+  <!-- bulb -->
+  <path
+    class="bulb"
+    d="M32 13c13 0 21 11 21 22 0 10-9 17-21 19C20 52 11 45 11 35c0-11 8-22 21-22Z"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
+  <!-- layers (evenly spread) -->
+  <g fill="none" class="lines" stroke-width="3" stroke-linecap="round">
+    <path d="M26 15c-6.5 8-8.5 22-3.5 34" />
+    <path d="M30 15.5c-4 9-5 24-2 36" />
+    <path d="M34 15.5c4 9 5 24 2 36" />
+    <path d="M38 15c6.5 8 8.5 22 3.5 34" />
+  </g>
+  <!-- roots -->
+  <g fill="none" class="lines" stroke-width="2.5" stroke-linecap="round">
+    <path d="m28 53.5-6 5" />
+    <path d="m30 54.5-2.5 6.5" />
+    <path d="M32 55v7" />
+    <path d="m34 54.5 2.5 6.5" />
+    <path d="m36 53.5 6 5" />
+  </g>
+</svg>

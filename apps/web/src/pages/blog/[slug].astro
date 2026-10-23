@@ -1,0 +1,74 @@
+---
+import { PostLayout } from '@layouts';
+import { Breadcrumbs } from '@components';
+import { getPublishedPosts } from '@utils';
+import type { Post } from '@utils';
+
+// For static site generation
+export async function getStaticPaths() {
+  const { docs: posts } = await getPublishedPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as { post: Post };
+---
+
+<PostLayout title={post.title}>
+  <Breadcrumbs crumbs={[{ href: '/blog', label: 'Blog' }, { label: post.title }]} />
+  <header>
+    <h1>{post.title}</h1>
+    {post.publishedDate && (
+      <time class="post-date" datetime={post.publishedDate}>
+        {new Date(post.publishedDate).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })}
+      </time>
+    )}
+  </header>
+
+  {post.htmlContent ? (
+    <div class="prose-content" set:html={post.htmlContent} />
+  ) : (
+    <p class="text-muted">No content</p>
+  )}
+
+  <footer class="post-footer">
+    <a href="/blog">
+      ← Back to blog
+    </a>
+  </footer>
+</PostLayout>
+
+<style>
+  header {
+    margin-bottom: 2.5rem;
+  }
+  
+  header h1 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .post-date {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+  
+  .post-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  
+  .post-footer a {
+    text-decoration: none;
+  }
+  
+  .post-footer a:hover {
+    color: var(--color-link-hover);
+  }
+</style>
