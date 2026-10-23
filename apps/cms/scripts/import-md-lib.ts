@@ -84,3 +84,42 @@ export function markdownToLexical(markdown: string) {
 
 export const importableFiles = (files: string[]): string[] =>
   files.filter((file) => file.endsWith('.md') && !file.startsWith('_'))
+
+export type PostData = {
+  title: string
+  slug: string
+  status: 'draft' | 'published' | 'archived'
+  publishedDate?: string
+  tags?: string[]
+  excerpt?: string
+  content: Record<string, unknown>
+}
+
+import type { Payload } from 'payload'
+
+// Creates or updates a post by slug, so re-importing is safe.
+export async function upsertPost(payload: Payload, data: PostData): Promise<'created' | 'updated'> {
+  const { docs } = await payload.find({
+    collection: 'posts',
+    where: { slug: { equals: data.slug } },
+    limit: 1,
+    overrideAccess: true,
+  })
+
+  if (docs[0]) {
+    await payload.update({
+      collection: 'posts',
+      id: docs[0].id,
+      data: data as never,
+      overrideAccess: true,
+    })
+    return 'updated'
+  }
+
+  await payload.create({
+    collection: 'posts',
+    data: data as never,
+    overrideAccess: true,
+  })
+  return 'created'
+}

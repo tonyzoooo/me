@@ -1,6 +1,6 @@
 # Common operations; see `make help` for the list
 
-.PHONY: help install dev dev-web dev-cms build lint typecheck test clean docker-cms-up docker-cms-down import-md
+.PHONY: help install dev dev-web dev-cms build lint typecheck test clean docker-cms-up docker-cms-down import-md sync-md
 
 help:
 	@echo "Tony's Monorepo - Available Commands"
@@ -19,7 +19,7 @@ help:
 	@echo "  make clean            # Clean build artifacts"
 	@echo ""
 	@echo "Content:"
-	@echo "  make import-md        # Import content/*.md into the production CMS"
+	@echo "  make sync-md SPACE=.  # Import publishable SilverBullet pages straight into the CMS"
 	@echo ""
 
 install:
@@ -55,3 +55,6 @@ docker-cms-down:
 
 import-md:
 	cd apps/cms && set -a && . ./.env.production && set +a && pnpm exec tsx scripts/import-md.mts ../../content
+
+sync-md:
+	cd apps/cms && set -a && . ./.env.production && set +a && pnpm exec tsx scripts/sync-silverbullet.mts $(SPACE)
