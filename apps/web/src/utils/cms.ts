@@ -11,6 +11,7 @@ export interface LexicalNode {
   version?: number;
   direction?: string;
   relationTo?: string;
+  code?: string;
   children?: LexicalNode[];
   fields?: {
     url?: string;
@@ -84,6 +85,10 @@ export function lexicalToHtml(
     case 'code':
       return `<pre><code>${renderChildren(editorNode.children)}</code></pre>`;
 
+    case 'mermaid':
+      // Rendered client-side by mermaid.js (see containsMermaid)
+      return `<pre class="mermaid">${escapeHtml(editorNode.code ?? '')}</pre>`;
+
     case 'linebreak':
       return '<br />';
 
@@ -119,6 +124,14 @@ export function lexicalToText(
     n?.text ? n.text : (n?.children ?? []).map(walk).join(' ');
   const root = (node as LexicalContent).root ?? (node as LexicalNode);
   return walk(root);
+}
+
+// True when the content includes at least one mermaid diagram, so pages can
+// load the mermaid.js renderer only when needed.
+export function containsMermaid(content: LexicalContent | null): boolean {
+  const walk = (node?: LexicalNode): boolean =>
+    node?.type === 'mermaid' || (node?.children ?? []).some(walk);
+  return walk(content?.root);
 }
 
 // Reading stats derived from the content

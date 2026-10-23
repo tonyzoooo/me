@@ -4,6 +4,20 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "DATABASE_URL",
+        "NEXT_PUBLIC_SITE_URL",
+        "PAYLOAD_SECRET",
+        "PUBLIC_CMS_URL",
+        "R2_ACCESS_KEY_ID",
+        "R2_BUCKET",
+        "R2_ENDPOINT",
+        "R2_PUBLIC_URL",
+        "R2_SECRET_ACCESS_KEY",
+        "VERCEL_ENV",
+        "VERCEL_PROJECT_PRODUCTION_URL",
+        "WEB_DEPLOY_HOOK_URL"
+      ],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
@@ -23,5 +37,6 @@
       "cache": false,
       "persistent": true
     }
-  }
+  },
+  "globalEnv": ["CI"]
 }

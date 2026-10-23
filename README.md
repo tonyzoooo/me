@@ -251,7 +251,7 @@ The stack in production:
 3. **Vercel login** (once, opens a browser):
 
    ```sh
-   pnpm --dir apps/cms exec vercel login
+   pnpm dlx vercel@63 login
    ```
 
 4. **Copy and fill in the production config**:

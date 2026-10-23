@@ -2,7 +2,7 @@
 # Sets up and deploys both Vercel projects (cms + web) from this repo.
 #
 # Prerequisites:
-#   - Vercel login:      pnpm --dir apps/cms exec vercel login
+#   - Vercel login:      pnpm dlx vercel@63 login
 #   - Filled-in config:  apps/cms/.env.production (see .env.production.example)
 #   - Neon schema:       DATABASE_URL=<neon> pnpm --dir apps/cms exec payload migrate
 # Usage:
@@ -22,9 +22,9 @@ say() { printf '\n==> %s\n' "$1"; }
 
 # --- checks -----------------------------------------------------------------
 
-if ! pnpm --dir apps/cms exec vercel whoami >/dev/null 2>&1; then
+if ! pnpm dlx vercel@63 whoami >/dev/null 2>&1; then
   echo "Not logged in to Vercel. Run:"
-  echo "  pnpm --dir apps/cms exec vercel login"
+  echo "  pnpm dlx vercel@63 login"
   exit 1
 fi
 
@@ -53,13 +53,13 @@ set_env() { # set_env <dir> <name> <value>
   # Public framework prefixes (NEXT_PUBLIC_, PUBLIC_) are inlined into the
   # client bundle and cannot be stored as sensitive values
   case "$name" in NEXT_PUBLIC_* | PUBLIC_*) flags="--no-sensitive" ;; esac
-  printf '%s' "$value" | (cd "$dir" && pnpm exec vercel env add "$name" production --force $flags >/dev/null)
+  printf '%s' "$value" | (cd "$dir" && pnpm dlx vercel@63 env add "$name" production --force $flags >/dev/null)
 }
 
 # --- cms project -------------------------------------------------------------
 
 say "Linking CMS project ($CMS_PROJECT)"
-(cd apps/cms && pnpm exec vercel link --project "$CMS_PROJECT" --yes >/dev/null)
+(cd apps/cms && pnpm dlx vercel@63 link --project "$CMS_PROJECT" --yes >/dev/null)
 
 say "Setting CMS environment variables"
 for VAR in DATABASE_URL PAYLOAD_SECRET R2_ENDPOINT R2_BUCKET R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY R2_PUBLIC_URL; do
@@ -70,19 +70,19 @@ set_env apps/cms NEXT_PUBLIC_SITE_URL "$SITE_URL"
 echo "  NEXT_PUBLIC_SITE_URL=$SITE_URL"
 
 say "Deploying CMS"
-(cd apps/cms && pnpm exec vercel deploy --prod)
+(cd apps/cms && pnpm dlx vercel@63 deploy --prod)
 
 # --- web project -------------------------------------------------------------
 
 say "Linking web project ($WEB_PROJECT)"
-(cd apps/web && pnpm exec vercel link --project "$WEB_PROJECT" --yes >/dev/null)
+(cd apps/web && pnpm dlx vercel@63 link --project "$WEB_PROJECT" --yes >/dev/null)
 
 say "Setting web environment variables"
 set_env apps/web PUBLIC_CMS_URL "$SITE_URL"
 echo "  PUBLIC_CMS_URL=$SITE_URL"
 
 say "Deploying web"
-(cd apps/web && pnpm exec vercel deploy --prod)
+(cd apps/web && pnpm dlx vercel@63 deploy --prod)
 
 # --- wrap up -----------------------------------------------------------------
 
@@ -95,9 +95,9 @@ Deployed:
 One manual step left (Vercel dashboard, web project -> Settings -> Deploy Hooks):
   1. Create a deploy hook, e.g. "cms-content"
   2. Add its URL to the CMS project:
-       pnpm --dir apps/cms exec vercel env add WEB_DEPLOY_HOOK_URL production
+       pnpm dlx vercel@63 env add WEB_DEPLOY_HOOK_URL production
   3. Redeploy the CMS:
-       pnpm --dir apps/cms exec vercel deploy --prod
+       pnpm dlx vercel@63 deploy --prod
 
 To get push-to-deploy on git pushes, connect both projects to the GitHub
 repo in the Vercel dashboard (Settings -> Git).
