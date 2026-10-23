@@ -1,7 +1,12 @@
 name: Cleanup ghost deployments
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
+  schedule:
+    # Mondays 04:00 UTC
+    - cron: '0 4 * * 1'
 
 permissions:
   contents: read
@@ -21,11 +26,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Collect first, then delete: paginating while deleting shifts pages.
+          # The GitHub API answers out-of-range pages with 200 and an empty
+          # array, so an empty batch (not an api error) is the exit condition.
           page=1
           : > /tmp/deployments.txt
           while :; do
-            gh api "repos/${{ github.repository }}/deployments?per_page=100&page=$page" \
-              --jq '.[] | [.id, .sha] | @tsv' >> /tmp/deployments.txt || break
+            batch=$(gh api \
+              "repos/${{ github.repository }}/deployments?per_page=100&page=$page" \
+              --jq '.[] | [.id, .sha] | @tsv')
+            [ -z "$batch" ] && break
+            printf '%s\n' "$batch" >> /tmp/deployments.txt
             page=$((page + 1))
           done
 
