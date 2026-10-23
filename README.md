@@ -27,7 +27,9 @@ Other targets: `make lint`, `make typecheck`, `make test`, `make build`, `make h
 Two ways:
 
 1. **Admin panel** at tonyzoooo.me/admin. Saving a post fires the site's Vercel deploy hook, so publishing rebuilds the site within a minute.
-2. **Markdown files** in `content/` with frontmatter (`title`, `status`, `tags`, `publishedDate`, `excerpt`), then `make import-md`. The importer is idempotent by slug: re-running updates existing posts. See `apps/cms/tests/fixtures/example-post.md` for the format.
+2. **SilverBullet**: `make sync-md SPACE=<path to your space>` imports every page whose frontmatter has `publish: true` straight into the CMS - no git involved. Posts are published by default (frontmatter `status:` overrides), matched by slug so re-running updates, and the site rebuild is triggered automatically. Title comes from the frontmatter or the first heading, slug from the filename.
+
+3. **Any markdown folder**: `apps/cms/scripts/import-md.mts <folder>` imports `.md` files with frontmatter (`title`, `status`, `tags`, `publishedDate`, `excerpt`), idempotent by slug. See `apps/cms/tests/fixtures/example-post.md` for the format.
 
 ## Deployment
 

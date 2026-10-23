@@ -23,6 +23,7 @@ import {
   markdownToLexical,
   parseFrontmatter,
   slugify,
+  upsertPost,
 } from './import-md-lib.js'
 
 const folder = process.argv[2]
@@ -57,39 +58,16 @@ for (const file of files) {
 
   const content = markdownToLexical(body.trim())
 
-  const { docs } = await payload.find({
-    collection: 'posts',
-    where: { slug: { equals: slug } },
-    limit: 1,
-    overrideAccess: true,
-  })
-
-  const postData = {
+  const result = await upsertPost(payload, {
     title: data.title,
     slug,
     status,
     publishedDate: data.publishedDate ?? undefined,
     tags: data.tags ?? [],
     excerpt: data.excerpt ?? '',
-    content,
-  }
-
-  if (docs[0]) {
-    await payload.update({
-      collection: 'posts',
-      id: docs[0].id,
-      data: postData,
-      overrideAccess: true,
-    })
-    console.log(`${file}: updated "${slug}" (${status})`)
-  } else {
-    await payload.create({
-      collection: 'posts',
-      data: postData,
-      overrideAccess: true,
-    })
-    console.log(`${file}: created "${slug}" (${status})`)
-  }
+    content: content as Record<string, unknown>,
+  })
+  console.log(`${file}: ${result} "${slug}" (${status})`)
 }
 
 process.exit(0)
