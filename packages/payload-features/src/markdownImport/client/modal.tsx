@@ -1,58 +1,56 @@
-'use client'
+'use client';
 
-import { useLexicalComposerContext } from '@payloadcms/richtext-lexical/lexical/react/LexicalComposerContext'
-import { createPortal } from 'react-dom'
-import { useEffect, useState } from 'react'
+import { useLexicalComposerContext } from '@payloadcms/richtext-lexical/lexical/react/LexicalComposerContext';
 
-import {
-  $convertFromMarkdownString,
-  TRANSFORMERS,
-  type Transformer,
-} from '@payloadcms/richtext-lexical/lexical/markdown'
+import { useEffect, useState } from 'react';
 
-import { MermaidMarkdownTransformer } from '../../mermaid/server/markdownTransformer'
+import { $convertFromMarkdownString } from '@payloadcms/richtext-lexical/lexical/markdown';
 
-export const OPEN_MARKDOWN_IMPORT_COMMAND = 'markdown-import' as const
+import { markdownImportTransformers } from '../../markdownTransformers';
 
-const transformers: Transformer[] = [...TRANSFORMERS, MermaidMarkdownTransformer]
+export const OPEN_MARKDOWN_IMPORT_COMMAND = 'markdown-import' as const;
 
 // Modal opened from the toolbar; converts the pasted markdown document and
 // replaces the editor content with the result.
 export const MarkdownImportModal = () => {
-  const [editor] = useLexicalComposerContext()
-  const [open, setOpen] = useState(false)
-  const [markdown, setMarkdown] = useState('')
+  const [editor] = useLexicalComposerContext();
+  const [open, setOpen] = useState(false);
+  const [markdown, setMarkdown] = useState('');
 
   useEffect(() => {
     const listener = (event: Event) => {
-      if (event instanceof CustomEvent && event.type === OPEN_MARKDOWN_IMPORT_COMMAND) {
-        setOpen(true)
+      if (
+        event instanceof CustomEvent &&
+        event.type === OPEN_MARKDOWN_IMPORT_COMMAND
+      ) {
+        setOpen(true);
       }
-    }
-    document.addEventListener(OPEN_MARKDOWN_IMPORT_COMMAND, listener)
-    return () => document.removeEventListener(OPEN_MARKDOWN_IMPORT_COMMAND, listener)
-  }, [])
+    };
+    document.addEventListener(OPEN_MARKDOWN_IMPORT_COMMAND, listener);
+    return () =>
+      document.removeEventListener(OPEN_MARKDOWN_IMPORT_COMMAND, listener);
+  }, []);
 
   if (!open) {
-    return null
+    return null;
   }
 
   const importMarkdown = () => {
     editor.update(
       () => {
-        $convertFromMarkdownString(markdown, transformers)
+        $convertFromMarkdownString(markdown, markdownImportTransformers);
       },
-      { discrete: true },
-    )
-    setOpen(false)
-    setMarkdown('')
-  }
+      { discrete: true }
+    );
+    setOpen(false);
+    setMarkdown('');
+  };
 
-  return createPortal(
+  return (
     <div
       onClick={(event) => {
         if (event.target === event.currentTarget) {
-          setOpen(false)
+          setOpen(false);
         }
       }}
       style={{
@@ -84,7 +82,9 @@ export const MarkdownImportModal = () => {
         </p>
         <textarea
           onChange={(event) => setMarkdown(event.target.value)}
-          placeholder={'# Hello\n\nA paragraph, with **bold** text.\n\n- one\n- two'}
+          placeholder={
+            '# Hello\n\nA paragraph, with **bold** text.\n\n- one\n- two'
+          }
           rows={14}
           spellCheck={false}
           style={{
@@ -93,16 +93,21 @@ export const MarkdownImportModal = () => {
           }}
           value={markdown}
         />
-        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+        <div
+          style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}
+        >
           <button onClick={() => setOpen(false)} type="button">
             Cancel
           </button>
-          <button disabled={!markdown.trim()} onClick={importMarkdown} type="button">
+          <button
+            disabled={!markdown.trim()}
+            onClick={importMarkdown}
+            type="button"
+          >
             Import
           </button>
         </div>
       </div>
-    </div>,
-    document.body,
-  )
-}
+    </div>
+  );
+};

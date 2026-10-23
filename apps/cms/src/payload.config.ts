@@ -9,8 +9,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
-import { MarkdownImportFeature } from './features/markdownImport/server/index'
-import { MermaidFeature } from './features/mermaid/server/index'
+import { CodeBlockFeature, MarkdownImportFeature, MermaidFeature } from '@repo/payload-features'
 import { r2FileUrl } from './r2Url'
 
 const filename = fileURLToPath(import.meta.url)
@@ -32,6 +31,7 @@ export default buildConfig({
       ...defaultFeatures,
       MarkdownImportFeature(),
       MermaidFeature(),
+      CodeBlockFeature(),
       UploadFeature({
         collections: {
           media: {

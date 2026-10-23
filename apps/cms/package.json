@@ -24,6 +24,7 @@
     "@payloadcms/richtext-lexical": "^3.91.0",
     "@payloadcms/storage-s3": "^3.91.0",
     "@payloadcms/ui": "^3.91.0",
+    "@repo/payload-features": "workspace:*",
     "cross-env": "^10.1.0",
     "dotenv": "^18.0.7",
     "graphql": "^17.0.2",
@@ -36,6 +37,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",

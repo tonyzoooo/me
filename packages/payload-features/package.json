@@ -1,0 +1,40 @@
+{
+  "name": "@repo/payload-features",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client/mermaid": "./src/mermaid/client/index.tsx",
+    "./client/markdownImport": "./src/markdownImport/client/index.tsx",
+    "./client/codeBlock": "./src/codeBlock/client/index.tsx"
+  },
+  "dependencies": {
+    "mermaid": "^12.2.0"
+  },
+  "devDependencies": {
+    "@payloadcms/richtext-lexical": "^3.91.0",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/react": "^19.3.0",
+    "eslint": "^10.12.0",
+    "graphql": "^17.0.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.4"
+  },
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "peerDependencies": {
+    "@payloadcms/richtext-lexical": "^3.91.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

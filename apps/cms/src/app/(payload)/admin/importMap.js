@@ -2,6 +2,9 @@ import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { CodeBlockFeatureClient as CodeBlockFeatureClient_cca2bfad98696e4f482eb1c323afca9e } from '@repo/payload-features/client/codeBlock'
+import { MermaidFeatureClient as MermaidFeatureClient_f5462758e6901d7d38a6189c0886f61e } from '@repo/payload-features/client/mermaid'
+import { MarkdownImportFeatureClient as MarkdownImportFeatureClient_0bb091740e317fc495d217e605c4e50f } from '@repo/payload-features/client/markdownImport'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BlockquoteFeatureClient as BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
@@ -30,6 +33,9 @@ export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@repo/payload-features/client/codeBlock#CodeBlockFeatureClient": CodeBlockFeatureClient_cca2bfad98696e4f482eb1c323afca9e,
+  "@repo/payload-features/client/mermaid#MermaidFeatureClient": MermaidFeatureClient_f5462758e6901d7d38a6189c0886f61e,
+  "@repo/payload-features/client/markdownImport#MarkdownImportFeatureClient": MarkdownImportFeatureClient_0bb091740e317fc495d217e605c4e50f,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BlockquoteFeatureClient": BlockquoteFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,

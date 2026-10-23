@@ -12,6 +12,7 @@ export interface LexicalNode {
   direction?: string;
   relationTo?: string;
   code?: string;
+  language?: string;
   children?: LexicalNode[];
   fields?: {
     url?: string;
@@ -84,6 +85,13 @@ export function lexicalToHtml(
 
     case 'code':
       return `<pre><code>${renderChildren(editorNode.children)}</code></pre>`;
+
+    case 'codeblock': {
+      const languageClass = editorNode.language
+        ? ` class="language-${editorNode.language}"`
+        : '';
+      return `<pre><code${languageClass}>${escapeHtml(editorNode.code ?? '')}</code></pre>`;
+    }
 
     case 'mermaid':
       // Rendered client-side by mermaid.js (see containsMermaid)

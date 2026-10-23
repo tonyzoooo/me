@@ -1,54 +1,54 @@
-'use client'
+'use client';
 
-import { useLexicalComposerContext } from '@payloadcms/richtext-lexical/lexical/react/LexicalComposerContext'
-import mermaid from 'mermaid'
-import { useEffect, useId, useState } from 'react'
+import { useLexicalComposerContext } from '@payloadcms/richtext-lexical/lexical/react/LexicalComposerContext';
+import mermaid from 'mermaid';
+import { useEffect, useId, useState } from 'react';
 
-import type { MermaidNode } from './node'
+import type { MermaidNode } from './node';
 
-let initialized = false
+let initialized = false;
 
 function ensureMermaid(): void {
   if (initialized) {
-    return
+    return;
   }
-  mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' })
-  initialized = true
+  mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' });
+  initialized = true;
 }
 
 // Renders the diagram code with a textarea beside a live preview.
 export const MermaidEditor = ({ node }: { node: MermaidNode }) => {
-  const [editor] = useLexicalComposerContext()
-  const [svg, setSvg] = useState('')
-  const [error, setError] = useState('')
-  const domId = `mermaid-preview-${useId().replace(/[^a-zA-Z0-9-]/g, '')}`
+  const [editor] = useLexicalComposerContext();
+  const [svg, setSvg] = useState('');
+  const [error, setError] = useState('');
+  const domId = `mermaid-preview-${useId().replace(/[^a-zA-Z0-9-]/g, '')}`;
 
-  const code = node.__code
-  const hasCode = code.trim().length > 0
+  const code = node.__code;
+  const hasCode = code.trim().length > 0;
 
   useEffect(() => {
     if (!hasCode) {
-      return
+      return;
     }
-    ensureMermaid()
-    let cancelled = false
+    ensureMermaid();
+    let cancelled = false;
     mermaid
       .render(domId, code)
       .then(({ svg: rendered }) => {
         if (!cancelled) {
-          setSvg(rendered)
-          setError('')
+          setSvg(rendered);
+          setError('');
         }
       })
       .catch((err: unknown) => {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : String(err))
+          setError(err instanceof Error ? err.message : String(err));
         }
-      })
+      });
     return () => {
-      cancelled = true
-    }
-  }, [code, domId, hasCode])
+      cancelled = true;
+    };
+  }, [code, domId, hasCode]);
 
   return (
     <div
@@ -66,8 +66,8 @@ export const MermaidEditor = ({ node }: { node: MermaidNode }) => {
       <textarea
         onChange={(event) => {
           editor.update(() => {
-            node.setCode(event.target.value)
-          })
+            node.setCode(event.target.value);
+          });
         }}
         placeholder={'graph TD\n  A --> B'}
         rows={8}
@@ -88,13 +88,19 @@ export const MermaidEditor = ({ node }: { node: MermaidNode }) => {
         }}
       >
         {!hasCode || (!svg && !error) ? (
-          <p style={{ opacity: 0.6 }}>{hasCode ? 'Rendering preview...' : 'No preview yet'}</p>
+          <p style={{ opacity: 0.6 }}>
+            {hasCode ? 'Rendering preview...' : 'No preview yet'}
+          </p>
         ) : error ? (
-          <pre style={{ color: 'var(--theme-error-500)', whiteSpace: 'pre-wrap' }}>{error}</pre>
+          <pre
+            style={{ color: 'var(--theme-error-500)', whiteSpace: 'pre-wrap' }}
+          >
+            {error}
+          </pre>
         ) : (
           <div dangerouslySetInnerHTML={{ __html: svg }} />
         )}
       </div>
     </div>
-  )
-}
+  );
+};
