@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
 import {
   createClientFeature,
   toolbarAddDropdownGroupWithItems,
-} from '@payloadcms/richtext-lexical/client'
+} from '@payloadcms/richtext-lexical/client';
 
-import { MarkdownImportModal, OPEN_MARKDOWN_IMPORT_COMMAND } from './modal'
+import { MarkdownImportModal, OPEN_MARKDOWN_IMPORT_COMMAND } from './modal';
 
 const MarkdownIcon = () => (
   <svg
@@ -20,7 +20,7 @@ const MarkdownIcon = () => (
     <rect height="18" rx="2" width="20" x="2" y="3" />
     <path d="M6 15V9l3 3 3-3v6M17 9v6M17 12l-2.5 3M17 12l2.5 3" />
   </svg>
-)
+);
 
 export const MarkdownImportFeatureClient = createClientFeature({
   plugins: [
@@ -36,13 +36,15 @@ export const MarkdownImportFeatureClient = createClientFeature({
           ChildComponent: MarkdownIcon,
           key: 'markdown-import',
           label: ({ i18n }) => {
-            return i18n.t('lexical:markdownImport:label')
+            return i18n.t('lexical:markdownImport:label');
           },
           onSelect: () => {
-            document.dispatchEvent(new CustomEvent(OPEN_MARKDOWN_IMPORT_COMMAND))
+            document.dispatchEvent(
+              new CustomEvent(OPEN_MARKDOWN_IMPORT_COMMAND)
+            );
           },
         },
       ]),
     ],
   },
-})
+});

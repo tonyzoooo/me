@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2022",
+      "DOM",
+      "DOM.Iterable"
+    ]
+  },
+  "include": [
+    "src",
+    "tests"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "@repo/typescript-config/react-library.json"
+}

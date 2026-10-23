@@ -31,8 +31,8 @@ jobs:
       - name: Type check
         run: pnpm exec turbo check-types
 
-      - name: Web tests
-        run: pnpm exec turbo test --filter=web
+      - name: Web and feature tests
+        run: pnpm exec turbo test --filter=web --filter=@repo/payload-features
 
   cms-integration:
     name: CMS integration tests
