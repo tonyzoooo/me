@@ -1,9 +1,7 @@
-import next from 'eslint-config-next'
-import nextTypescript from 'eslint-config-next/typescript'
+import { nextJsConfig } from '@repo/eslint-config/next-js'
 
 const eslintConfig = [
-  ...next,
-  ...nextTypescript,
+  ...nextJsConfig,
   {
     rules: {
       '@typescript-eslint/ban-ts-comment': 'warn',

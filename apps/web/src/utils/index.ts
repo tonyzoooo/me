@@ -5,6 +5,7 @@ export {
   computeStats,
   lexicalToHtml,
   lexicalToText,
+  containsMermaid,
   mediaUrl,
   authorName,
   extractHeadings,

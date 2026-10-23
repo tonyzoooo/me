@@ -9,6 +9,8 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
+import { MarkdownImportFeature } from './features/markdownImport/server/index'
+import { MermaidFeature } from './features/mermaid/server/index'
 import { r2FileUrl } from './r2Url'
 
 const filename = fileURLToPath(import.meta.url)
@@ -28,6 +30,8 @@ export default buildConfig({
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
+      MarkdownImportFeature(),
+      MermaidFeature(),
       UploadFeature({
         collections: {
           media: {
