@@ -38,6 +38,8 @@ Everything deploys from `git push` to main:
 - Vercel builds both apps (git-connected, root directories `apps/web` and `apps/cms`).
 - GitHub Actions runs lint, types and tests; on success it records the deployment on the commit. Ghost records from history rewrites are cleaned up automatically.
 - The site is fully static; the CMS is only needed at build time. Content edits rebuild the site through the deploy hook.
+- The web build fetches the API via `CMS_API_URL` (falls back to `PUBLIC_CMS_URL`). Set it on the `tonyzoooo-me-web` project to the CMS's direct deployment URL, `https://tonyzoooo-me-cms.vercel.app`, so build runners are not blocked by the Cloudflare managed challenge on `tonyzoooo.me`. Alternatively, skip the challenge for `/api/*` with a Cloudflare WAF rule.
+- Vercel builds every pushed branch as a preview deployment. To deploy only `main` and pull requests, set each project's **Settings → Git → Ignored Build Step** to `bash ../../scripts/vercel-should-build.sh`.
 
 Infrastructure:
 

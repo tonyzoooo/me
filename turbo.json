@@ -9,6 +9,7 @@
         "NEXT_PUBLIC_SITE_URL",
         "PAYLOAD_SECRET",
         "PUBLIC_CMS_URL",
+        "CMS_API_URL",
         "R2_ACCESS_KEY_ID",
         "R2_BUCKET",
         "R2_ENDPOINT",

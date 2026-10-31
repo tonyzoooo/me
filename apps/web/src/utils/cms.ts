@@ -1,5 +1,10 @@
 const CMS_URL = import.meta.env.PUBLIC_CMS_URL || 'http://localhost:3000';
 
+// Endpoint for build-time API calls. Point this at the CMS's direct deployment
+// URL (e.g. https://tonyzoooo-me-cms.vercel.app): requests to the public domain
+// pass through Cloudflare, whose managed challenge blocks build runners.
+const CMS_API_URL = import.meta.env.CMS_API_URL || CMS_URL;
+
 // A single Lexical editor node
 export interface LexicalNode {
   type?: string;
@@ -300,48 +305,99 @@ function withDerivedFields(post: Post): Post {
   };
 }
 
+const FETCH_TIMEOUT_MS = 10_000;
+const RETRY_DELAYS_MS = [500, 1_500];
+
+let challengeHintLogged = false;
+
+// Collapse an error body (often a full HTML challenge page) into one short line
+function summarizeBody(body: string): string {
+  const oneLine = body.replace(/\s+/g, ' ').trim();
+  return oneLine.length > 300 ? `${oneLine.slice(0, 300)}...` : oneLine;
+}
+
+function isCloudflareChallenge(response: Response, body: string): boolean {
+  return (
+    response.headers.get('cf-mitigated') === 'challenge' ||
+    body.includes('Just a moment...')
+  );
+}
+
+// Fetch JSON from the CMS, retrying transient failures. Returns null on
+// failure so the static build still completes (with empty listings).
+async function fetchCmsJson(path: string): Promise<PostsResponse | null> {
+  const url = `${CMS_API_URL}${path}`;
+  let lastError = '';
+
+  for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt++) {
+    if (attempt > 0) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, RETRY_DELAYS_MS[attempt - 1])
+      );
+    }
+
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        headers: {
+          accept: 'application/json',
+          'user-agent': 'tonyzoooo-me-web-build (+https://tonyzoooo.me)',
+        },
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      });
+    } catch (error) {
+      lastError = `network error: ${error instanceof Error ? error.message : String(error)}`;
+      continue;
+    }
+
+    const body = await response.text();
+
+    if (response.ok) {
+      try {
+        return JSON.parse(body) as PostsResponse;
+      } catch {
+        lastError = `invalid JSON: ${summarizeBody(body)}`;
+        continue;
+      }
+    }
+
+    if (isCloudflareChallenge(response, body)) {
+      if (!challengeHintLogged) {
+        challengeHintLogged = true;
+        console.error(
+          `CMS fetch blocked by a Cloudflare challenge for ${url} ` +
+            `(cf-mitigated: ${response.headers.get('cf-mitigated')}). ` +
+            'Set CMS_API_URL to the CMS direct deployment URL ' +
+            '(e.g. https://tonyzoooo-me-cms.vercel.app), or skip the ' +
+            'managed challenge for /api/* in Cloudflare WAF.'
+        );
+      }
+      return null;
+    }
+
+    lastError = `HTTP ${response.status}: ${summarizeBody(body)}`;
+    if (response.status < 500) break;
+  }
+
+  console.error(`CMS fetch error for ${url}: ${lastError}`);
+  return null;
+}
+
 async function fetchPostsByStatus(
   status: 'published' | 'archived'
 ): Promise<{ docs: Post[] }> {
-  let response: Response;
-  try {
-    response = await fetch(
-      `${CMS_URL}/api/posts?where[status][equals]=${status}&limit=100&sort=-publishedDate`,
-      { signal: AbortSignal.timeout(10_000) }
-    );
-  } catch (error) {
-    console.error('CMS unreachable:', error);
-    return { docs: [] };
-  }
-
-  if (!response.ok) {
-    console.error('CMS fetch error:', await response.text());
-    return { docs: [] };
-  }
-
-  const data: PostsResponse = await response.json();
-  return { docs: data.docs.map(withDerivedFields) };
+  const data = await fetchCmsJson(
+    `/api/posts?where[status][equals]=${status}&limit=100&sort=-publishedDate`
+  );
+  if (!data) return { docs: [] };
+  return { docs: (data.docs ?? []).map(withDerivedFields) };
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  let response: Response;
-  try {
-    response = await fetch(
-      `${CMS_URL}/api/posts?where[slug][equals]=${slug}&where[status][equals]=published`,
-      { signal: AbortSignal.timeout(10_000) }
-    );
-  } catch (error) {
-    console.error('CMS unreachable for slug', slug, ':', error);
-    return null;
-  }
-
-  if (!response.ok) {
-    console.error('CMS fetch error for slug', slug, ':', await response.text());
-    return null;
-  }
-
-  const data: PostsResponse = await response.json();
-  const post = data.docs[0];
+  const data = await fetchCmsJson(
+    `/api/posts?where[slug][equals]=${encodeURIComponent(slug)}&where[status][equals]=published`
+  );
+  const post = data?.docs?.[0];
   if (!post) return null;
   return withDerivedFields(post);
 }
