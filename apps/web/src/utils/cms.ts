@@ -1,9 +1,15 @@
 const CMS_URL = import.meta.env.PUBLIC_CMS_URL || 'http://localhost:3000';
 
-// Endpoint for build-time API calls. Point this at the CMS's direct deployment
-// URL (e.g. https://tonyzoooo-me-cms.vercel.app): requests to the public domain
-// pass through Cloudflare, whose managed challenge blocks build runners.
-const CMS_API_URL = import.meta.env.CMS_API_URL || CMS_URL;
+// Endpoint for build-time API calls. Point CMS_API_URL at the CMS's direct
+// deployment URL (e.g. https://tonyzoooo-me-cms.vercel.app): requests to the
+// public domain pass through Cloudflare, whose managed challenge blocks build
+// runners. Non-PUBLIC_ vars are not exposed on import.meta.env in the built
+// output, so read process.env first (populated in the Vercel build step).
+const processEnv =
+  (globalThis as { process?: { env?: Record<string, string | undefined> } })
+    .process?.env ?? {};
+const CMS_API_URL =
+  processEnv.CMS_API_URL || import.meta.env.CMS_API_URL || CMS_URL;
 
 // A single Lexical editor node
 export interface LexicalNode {
