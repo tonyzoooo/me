@@ -3,13 +3,16 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "env": [
         "DATABASE_URL",
         "NEXT_PUBLIC_SITE_URL",
         "PAYLOAD_SECRET",
         "PUBLIC_CMS_URL",
         "CMS_API_URL",
+        "PUBLIC_CMS_API_URL",
         "R2_ACCESS_KEY_ID",
         "R2_BUCKET",
         "R2_ENDPOINT",
@@ -19,25 +22,40 @@
         "VERCEL_PROJECT_PRODUCTION_URL",
         "WEB_DEPLOY_HOOK_URL"
       ],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**"
+      ]
     },
     "web#build": {
       "cache": false
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": [
+        "^lint"
+      ]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": [
+        "^check-types"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true
     }
   },
-  "globalEnv": ["CI"]
+  "globalEnv": [
+    "CI"
+  ]
 }
